@@ -14,7 +14,7 @@ kubectl --context docker-desktop create namespace argocd --dry-run=client -o yam
 
 echo "2) ArgoCD 설치"
 kubectl --context docker-desktop apply -n argocd -f \
-  https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+  https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml --server-side --force-conflicts
 
 echo "3) 컴포넌트 기동 대기 (수 분 소요될 수 있습니다)"
 kubectl --context docker-desktop -n argocd rollout status deploy/argocd-server --timeout=180s

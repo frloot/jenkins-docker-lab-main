@@ -5,16 +5,16 @@ metadata:
   namespace: argocd
 spec:
   project: default
-  source:
+  source:  # ArgoCD에서 source로 판단하는 repository 주소 -> gitops 저장소
     repoURL: https://github.com/frloot/jenkins-docker-lab-main
-    targetRevision: main
+    targetRevision: main # main 
     path: argocd/manifests
-  destination:
+  destination: # 넣을 namespace 
     server: https://kubernetes.default.svc
     namespace: argocd-demo-app
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+  syncPolicy: # 배포 policy 
+    automated: # 자동으로 git 내용을 감지할 부분
+      prune: true # git 저장소에서 삭제되면 cluster에서 삭제 (prune)
+      selfHeal: true # cluster가 git과 달라지면 자동으로 cluster가 git 기준으로 복구됨
     syncOptions:
       - CreateNamespace=true
