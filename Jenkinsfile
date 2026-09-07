@@ -1,11 +1,11 @@
 pipeline {
-  agent any
+  agent any // runner 개념. 프로세스
 
   parameters {
     choice(name: 'TARGET_ENV', choices: ['dev', 'staging', 'production'], description: '배포할 환경을 선택하세요')
   }
 
-  environment {
+  environment { // 변수 선언
     IMAGE = "sample-app:${env.BUILD_NUMBER}"
     NAMESPACE = "sample-app-${params.TARGET_ENV}"
     KCTL = "kubectl --context docker-desktop"
@@ -26,7 +26,7 @@ pipeline {
 
     stage('Namespace 준비') {
       steps {
-        sh "${KCTL} apply -f k8s/namespaces.yaml"
+        sh "${KCTL} apply -f k8s/namespaces.yaml --validate=false"
       }
     }
 
@@ -46,7 +46,7 @@ pipeline {
     }
   }
 
-  post {
+  post { // stages 종료 후 진행할 부분
     failure {
       echo "❌ 빌드 실패 — 콘솔 로그를 확인하세요: ${env.BUILD_URL}console"
     }
